@@ -292,7 +292,6 @@ endfunction
 
 function! s:openByName(names, str)
    let [_, i, n; rest] = matchlist(a:str, '\v#([0-9]+) \[(.+)\]')
-   echom "extracted " . i . " " . n
    call s:openByNameIndex(a:names, i)
 endfunction
 
