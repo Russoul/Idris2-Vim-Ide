@@ -473,7 +473,6 @@ function! IdrisClose()
 endfunction
 
 function! s:onIdeJobStdout(jobId, data, _)
-   echom "job stdout " . string(a:data)
    if len(a:data) == 2
       " check if the output is probably a port number
       if a:data[0] =~ '\v^[0-9]{2,}'
