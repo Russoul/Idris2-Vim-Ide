@@ -1,4 +1,4 @@
-# Idris2-Vim-Ide
+# Vim client for Idris2 IDE socket
 
 ## Requirements
 - For the time being the plugin only works with Neovim.
@@ -21,6 +21,14 @@ Using [vim-plug](https://github.com/junegunn/vim-plug):
 `Plug 'Russoul/Idris2-Vim-Ide'`
 
 ## Usage
+
+### Implemented features:
+- Integrated Idris2 IDE server
+
+- File loading and typechecking
+
+- Compiler directed go-to-definition.
+  Not ideal yet, but opportunities for expansions are enormous.
 
 Default keybindings are:
 ```
