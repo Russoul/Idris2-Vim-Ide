@@ -7,9 +7,9 @@
 - The [fd](https://github.com/sharkdp/fd) tool is required.
   Later we can relax it to any `find` like utility.
 
-- The [fzf-vim](https://github.com/junegunn/fzf.vim) is also required at the moment.
+- [fzf-vim](https://github.com/junegunn/fzf.vim) is also required at the moment.
 
-- The plugin writes to [idris2-vim](https://github.com/edwinb/idris2-vim) response buffer
+- The plugin writes to the [idris2-vim](https://github.com/edwinb/idris2-vim) response buffer
   when loading files. But you probably have it installed already.
   
 - Obviously an [Idris2](https://github.com/idris-lang/Idris2) installation is a must.
