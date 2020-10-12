@@ -39,3 +39,4 @@ vnoremap <silent> <Leader>K "xy:call IdrisGoToX()<CR>
 " Load the current file. This needs to be done before using go-to-definition.
 nnoremap <silent> <Leader>L :call IdrisLoadFile()<CR>
 ```
+You can disable them setting `g:idrisIdeDisableDefaultMaps` to `v:true` before the plugin is loaded.
