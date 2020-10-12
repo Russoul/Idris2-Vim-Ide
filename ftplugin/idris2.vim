@@ -522,16 +522,19 @@ endfunction
 call IdrisStartIde()
 
 " Same as above, but the name is read
-" from the `x` register
-function! IdrisGoToX()
-   let x = @x
-   call IdrisGoTo(x)
+" from the visual selection
+function! IdrisGoToSelection()
+   let prevX = @x
+   normal! "xy
+   call IdrisGoTo(@x)
+   let @x = prevX
 endfunction
 
 " ==============================================================
 
-" Default maps
-" You should replace those with the ones that fit you best
-nnoremap <silent> <Leader>K :call IdrisGoTo(expand("\<cword>"))<CR>
-vnoremap <silent> <Leader>K "xy:call IdrisGoToX()<CR>
-nnoremap <silent> <Leader>L :call IdrisLoadFile()<CR>
+if !exists('g:idrisIdeDisableDefaultMaps') || !g:idrisIdeDisableDefaultMaps
+   " Default maps
+   nnoremap <silent> <Leader>K :call IdrisGoTo(expand("\<cword>"))<CR>
+   vnoremap <silent> <Leader>K :call IdrisGoToSelection()<CR>
+   nnoremap <silent> <Leader>L :call IdrisLoadFile()<CR>
+end
