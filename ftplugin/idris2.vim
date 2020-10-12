@@ -249,14 +249,45 @@ function! s:parseResponse(str)
        \ {str -> s:parseSepBy(str, {str -> s:parseResponse(str)}, {str -> s:parseManyWhitespace(str)})})}])
 endfunction
 
+" Given a list of filenames
+" returns a new list where only files with relative paths are preversed
+function! s:filterRelative(filenames)
+   if len(a:filenames) == 0
+      return []
+   else
+      let [x; xs] = a:filenames
+      if x =~ '\v^/'
+         return s:filterRelative(xs)
+      else
+         return [x] + s:filterRelative(xs)
+endfunction
+
 function! s:openByNameIndex(names, index)
-   let fullname = system("fd -p " . a:names[a:index][1] . ' .')
-   let fullname = substitute(fullname, '\v\^\@|\^M\n|\r', "", "g")
-   silent write
-   execute "vsplit " . fullname
-   call setpos('.', [0, a:names[a:index][2] + 1, a:names[a:index][3] + 1, 0])
-   normal! zz
-   call execute("vertical resize 50")
+   let fullnames = systemlist("fd -p " . a:names[a:index][1] . ' . ' . g:idrisSrcDir)
+   let filename = ""
+   if len(fullnames) == 0
+      echom "Could not find the file in the search path: " . a:names[a:index][1]
+      return
+   elseif len(fullnames) > 1
+      " If there are multiple occurrences, resort to files with relative paths
+      let relativeOnly = s:filterRelative(fullnames)
+      if len(relativeOnly) > 1 || len(relativeOnly) == 0
+         " Can't do anything, report
+         " Maybe we should open another fzf window for the user to be able to
+         " choose. But this would probably be an overkill
+         echom "Multiple files match the input:\n" . join(fullnames, '\n')
+         return
+      else
+         let filename = relativeOnly[0]
+      end
+   else
+      let filename = fullnames[0]
+   endif
+      silent write
+      execute "vsplit " . filename
+      call setpos('.', [0, a:names[a:index][2] + 1, a:names[a:index][3] + 1, 0])
+      normal! zz
+      call execute("vertical resize 50")
 endfunction
 
 function! s:openByName(names, str)
@@ -384,6 +415,21 @@ let g:idrisIdePort = "38398"
 " Internal job identifier
 let g:idrisIdeSocketId = 0
 
+let g:idrisGetSrcDirCmd = "idris2 --libdir"
+let g:idrisGetSrcDirCmdSuffix = "src"
+
+function! s:getSrcDir()
+   let libdir = systemlist(g:idrisGetSrcDirCmd)
+   if len(libdir) != 1
+      echoe "Wrong src dir: " . string(libdir)
+      return ""
+   else
+      return '"' . libdir[0] . "-" . g:idrisGetSrcDirCmdSuffix . '"'
+   end
+endfunction
+
+let g:idrisSrcDir = s:getSrcDir()
+
 " Establishes a connection with the IDE socket
 function! IdrisOpen()
    if g:idrisIdeSocketId == 0
@@ -410,6 +456,7 @@ endfunction
 
 " Sends a request to load the current file
 function! IdrisLoadFile()
+   write
    call IdrisSend('((:load-file "' . expand("%") . '") 1)')
 endfunction
 
@@ -464,7 +511,7 @@ endfunction
 
 function! IdrisStopIde()
    if g:idrisIdeJobId > 0
-      jobstop(g:idrisIdeJobId)
+      call jobstop(g:idrisIdeJobId)
       let g:idrisIdeJobId = 0
    else
       echom "IDE not yet running"
