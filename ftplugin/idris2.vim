@@ -521,8 +521,6 @@ endfunction
 " Start IDE instance
 call IdrisStartIde()
 
-" Same as above, but the name is read
-" from the visual selection
 function! IdrisGoToSelection()
    let prevX = @x
    normal! "xy
