@@ -35,7 +35,7 @@ Default keybindings are:
 " Go to definition by the word under the cursor.
 nnoremap <silent> <Leader>K :call IdrisGoTo(expand("\<cword>"))<CR>
 " Go to definition by the current visual selection.
-vnoremap <silent> <Leader>K "xy:call IdrisGoToX()<CR>
+vnoremap <silent> <Leader>K :call IdrisGoToSelection()<CR>
 " Load the current file. This needs to be done before using go-to-definition.
 nnoremap <silent> <Leader>L :call IdrisLoadFile()<CR>
 ```
