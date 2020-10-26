@@ -4,7 +4,7 @@
 - For the time being the plugin only works with Neovim.
   Supporting Vim 8 in the future isn't a problem though.
   
-- This project dependents on [PR #740](https://github.com/idris-lang/Idris2/pull/740)
+- This project depends on [PR #740](https://github.com/idris-lang/Idris2/pull/740)
   
 - The [fd](https://github.com/sharkdp/fd) tool is required.
   Later we can relax it to any `find` like utility.
