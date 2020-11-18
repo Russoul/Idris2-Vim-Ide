@@ -1,5 +1,7 @@
 # Vim client for Idris2 IDE socket
 
+## Obsolete, abandoned in favour of [nvim-idris2](https://github.com/ShinKage/nvim-idris2)
+
 ## Requirements
 - For the time being the plugin only works with Neovim.
   Supporting Vim 8 in the future isn't a problem though.
